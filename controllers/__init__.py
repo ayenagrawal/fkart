@@ -1,6 +1,4 @@
-# from fkart.controllers.registeration_api import Customer_Registeration_API, Seller_Registeration_API, Admin_Registeration_API
-# export_list = [Customer_Registeration_API, Seller_Registeration_API, Admin_Registeration_API]
-import os, sys, inspect
+import os, sys
 import pkgutil, importlib
 import types
 from flask.views import MethodViewType

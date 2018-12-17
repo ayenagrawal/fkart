@@ -1,13 +1,23 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from fkart.config import Config
-from fkart.controllers import export_api_list, PKG_DIR
 
 app = Flask(__name__)
-print("Project is running!!!")
-app.config.from_object(Config)
 
+from fkart.config import Config
+
+app.config.from_object(Config)
 db = SQLAlchemy(app)
+
+
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt(app)
+
+print("Project is running!!!")
+
+
+from fkart.controllers import export_api_list, PKG_DIR
+
 for c_name in export_api_list:
     print(c_name.__name__)
 
@@ -24,7 +34,7 @@ for api in export_api_list:
         api_url_temp += i
     api_url = api_url_temp
     del(api_url_temp)
-    #print("API URL:"+api_url)
+    print("API URL:"+api_url)
     #print('API NAME:'+api_name)
     # fopr removing '/' from beginning if present
     # if api_url[0] == "/":

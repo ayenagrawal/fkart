@@ -1,3 +1,4 @@
+import uuid
 from fkart.app import db
 
 def get_randomhex():
@@ -5,4 +6,4 @@ def get_randomhex():
 
 class BaseModel(db.Model):
     __abstract__ = True
-    id = db.Column(db.String(32), primary_key=True, default=get_randomhex)
+    id = db.Column("id", db.String(32), primary_key=True, default=get_randomhex)
