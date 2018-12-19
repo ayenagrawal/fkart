@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
@@ -36,8 +37,10 @@ for api in export_api_list:
     del(api_url_temp)
     print("API URL:"+api_url)
     #print('API NAME:'+api_name)
-    # fopr removing '/' from beginning if present
+    # for removing '/' from beginning if present
     # if api_url[0] == "/":
         # api_url = api_url[1:]
     view = api.as_view("%s" % api_name)
     app.add_url_rule("/"+(api_url), view_func=view)
+
+jwt = JWTManager(app)
