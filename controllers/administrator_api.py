@@ -23,6 +23,9 @@ class Admin_Auth(BaseAPI):
 class Admin_Profile(BaseAPI):
     @jwt_required
     def get(self):
-        userid = get_jwt_identity()
-        user = AdminModel.query.filter_by(id=userid).first()
-        return 'You are into admin profile!!! username: %s' % user.user_name
+        try:
+            userid = get_jwt_identity()
+            user = AdminModel.query.filter_by(id=userid).first()
+            return 'You are into admin profile!!! username: %s' % user.user_name
+        except AttributeError as error:
+            return jsonify({ "messsge": "Invalid JWT"}), 401

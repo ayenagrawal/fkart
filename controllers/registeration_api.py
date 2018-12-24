@@ -26,13 +26,13 @@ class Customer_Registeration_API(BaseAPI):
             db.session.add(cus)
             db.session.commit()
         except IntegrityError as error:
-            return ("Same data already exists!!! Enter valid data")
+            return ("Same data already exists!!! Enter valid data"), 401
         except:
             print(sys.exc_info()[0])
             db.session.rollback()
             db.session.commit()
-            return 'Some error occured!!!'
-        return 'Data entered intontable sucessfully!!!'
+            return 'Some error occured!!!', 500
+        return 'Data entered intontable sucessfully!!!', 200
 
 class Seller_Registeration_API(BaseAPI):
     def get(self):
@@ -54,13 +54,13 @@ class Seller_Registeration_API(BaseAPI):
             db.session.add(sel)
             db.session.commit()
         except IntegrityError as error:
-            return ("Same data already exists!!! Enter valid data")
+            return ("Same data already exists!!! Enter valid data"), 401
         except:
             print(sys.exc_info()[0])
             db.session.rollback()
             db.session.commit()
-            return 'Some error occured!!!'
-        return 'Data entered intontable sucessfully!!!'
+            return 'Some error occured!!!', 500
+        return 'Data entered intontable sucessfully!!!', 200
 
 class Admin_Registeration_API(BaseAPI):
     def get(self):
@@ -77,10 +77,10 @@ class Admin_Registeration_API(BaseAPI):
             db.session.add(sel)
             db.session.commit()
         except IntegrityError as error:
-            return ("Same data already exists!!! Enter valid data")
+            return ("Same data already exists!!! Enter valid data"), 401
         except:
             print(sys.exc_info()[0])
             db.session.rollback()
             db.session.commit()
-            return 'Some error occured!!!'
-        return 'Data entered intontable sucessfully!!!'
+            return 'Some error occured!!!', 500
+        return 'Data entered intontable sucessfully!!!', 200

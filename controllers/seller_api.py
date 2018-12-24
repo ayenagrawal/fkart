@@ -5,6 +5,7 @@ from fkart.app import bcrypt
 from fkart.controllers.base import BaseAPI
 from fkart.models.seller import SellerModel
 
+
 class Seller_Auth(BaseAPI):
     def post(self):
         data_dict = dict(request.get_json())
@@ -22,6 +23,9 @@ class Seller_Auth(BaseAPI):
 class Seller_Profile(BaseAPI):
     @jwt_required
     def get(self):
-        userid = get_jwt_identity()
-        user = SellerModel.query.filter_by(id=userid).first()
-        return 'You are into Customer profile!!! username: %s %s shopname: %s' % (user.first_name, user.last_name, user.shop_name)
+        try:
+            userid = get_jwt_identity()
+            user = SellerModel.query.filter_by(id=userid).first()
+            return 'You are into Customer profile!!! username: %s %s shopname: %s' % (user.first_name, user.last_name, user.shop_name)
+        except AttributeError as error:
+            return jsonify({ "messsge": "Invalid JWT"}), 401
