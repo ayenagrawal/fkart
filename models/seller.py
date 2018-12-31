@@ -12,3 +12,8 @@ class SellerModel(BaseModel):
     email_address = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     is_verified = db.Column(db.Boolean(), default=False)
+
+    def as_dict(self):
+        restricted_keys = ['password', 'id']
+        data_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in restricted_keys}
+        return data_dict
