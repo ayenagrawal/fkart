@@ -26,7 +26,7 @@ class Customer_Profile(BaseAPI):
         try:
             userid = get_jwt_identity()
             user = CustomerModel.query.filter_by(id=userid).first()
-            data_dict = user.as_dict()
+            data_dict = user.basic_data()
             return jsonify({"payload": data_dict})
         except AttributeError as error:
             return jsonify({ "messsge": "Invalid JWT", "error": str(error)}), 401

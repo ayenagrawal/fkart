@@ -17,3 +17,8 @@ class SellerModel(BaseModel):
         restricted_keys = ['password', 'id']
         data_dict = {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name not in restricted_keys}
         return data_dict
+
+    def basic_data(self):
+        keys = ["first_name", "last_name", "shop_name", "shop_address", "shop_description", "email_address"]
+        data_dict = {key: getattr(self, key) for key in keys}
+        return data_dict
