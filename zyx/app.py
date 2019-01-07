@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt import JWT
+#from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
@@ -16,11 +17,11 @@ bcrypt = Bcrypt(app)
 
 print("Project is running!!!")
 
-from fkart.models.administrator import AdminModel
-from fkart.models.customer import CustomerModel
-from fkart.models.seller import SellerModel
+#from fkart.models.administrator import AdminModel
+#from fkart.models.customer import CustomerModel
+#from fkart.models.seller import SellerModel
 
-def authenticate(email, password):
+#def authenticate(email, password):
     #logintype = categorynemail.split('-')[1]
     #email = categorynemail.split('-')[0]
     #if logintype == 'admin':
@@ -30,17 +31,19 @@ def authenticate(email, password):
     #elif logintype == 'seller':
         #tbl = SellerModel
 
-    user = AdminModel.query.filter_by(email_address=email).first()
-    if user:
-        if bcrypt.check_password_hash(user.password, password):
-            return user
+#    user = AdminModel.query.filter_by(email_address=email).first()
+#    if user:
+#        if bcrypt.check_password_hash(user.password, password):
+#            return user
 
-def identity(payload):
-    user_id = payload['identity']
-    user = AdminModel.query.filter_by(id=user_id).first()
-    return user
+#def identity(payload):
+#    user_id = payload['identity']
+#    user = AdminModel.query.filter_by(id=user_id).first()
+#    return user
 
-jwt = JWT(app, authenticate, identity)
+#jwt = JWT(app, authenticate, identity)
+
+jwt = JWTManager(app)
 
 
 from fkart.controllers import export_api_list, PKG_DIR
