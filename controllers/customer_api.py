@@ -8,10 +8,13 @@ from fkart.models.customer import CustomerModel
 
 class Customer_Auth(BaseAPI):
     def post(self):
-        data_dict = dict(request.get_json())
-        email = data_dict['email']
-        password = data_dict['password']
-
+        try:
+            data_dict = dict(request.get_json())
+            email = data_dict['email']
+            password = data_dict['password']
+        except Exception as error:
+            return jsonify({ "message": "A problem with Header occured!!!",
+                             "error": str(error)}), 401
         user = CustomerModel.query.filter_by(email_address=email).first()
         if not user:
             return jsonify({"message": "Invalid email"}), 401
