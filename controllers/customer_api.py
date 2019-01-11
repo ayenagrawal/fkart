@@ -1,3 +1,4 @@
+import logging
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
@@ -5,6 +6,7 @@ from fkart.app import bcrypt
 from fkart.controllers.base import BaseAPI
 from fkart.models.customer import CustomerModel
 
+LOGGER = logging.getLogger(__name__)
 
 class Customer_Auth(BaseAPI):
     def post(self):
@@ -21,6 +23,7 @@ class Customer_Auth(BaseAPI):
         if not bcrypt.check_password_hash(user.password, password):
             return jsonify({"message": "Invalid credentials"}), 401
         access_token = create_access_token(user.id)
+        LOGGER.info("LOGIN SUCESSFULL!!!")
         return jsonify({"access_token": access_token}), 200
 
 class Customer_Profile(BaseAPI):

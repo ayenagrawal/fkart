@@ -7,6 +7,8 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
+print("Project is running!!!")
+
 from fkart.config import Config
 
 app.config.from_object(Config)
@@ -25,8 +27,6 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
 LOGGER.info("Initialzed Bcrypt")
-
-print("Project is running!!!")
 
 
 jwt = JWTManager(app)

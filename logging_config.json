@@ -3,31 +3,33 @@
 	"formatters": {
 		"default": {
 			"format": "[%(asctime)s] %(name)s %(levelname)s in %(module)s: %(message)s"
-		}},
+		}
+	},
 	"handlers": {
 		"console": {
 			"class": "logging.StreamHandler",
-			"level": "INFO",
+			"level": "DEBUG",
 			"formatter": "default",
 			"stream": "ext://sys.stdout"
 		},
-		"debuglevel": {
+		"infolevel": {
 			"class": "logging.handlers.RotatingFileHandler",
-			"level": "DEBUG",
+			"level": "INFO",
 			"formatter": "default",
-			"filename": "debug_log.log",
+			"filename": "info_log.log",
+			"maxBytes": 10485760,
 			"encoding": "utf8"
 		}
 	},
 	"loggers": {
 		"example": {
 			"level": "DEBUG",
-			"handlers": ["debuglevel"]
+			"handlers": ["infolevel"]
 		}
 	},
 	"root": {
 		"level": "INFO",
-		"handlers": ["console", "debuglevel"]
+		"handlers": ["console", "infolevel"]
 	},
 	"disable_existing_loggers": "false"
 }
