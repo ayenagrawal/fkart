@@ -1,0 +1,33 @@
+{
+	"version": 1,
+	"formatters": {
+		"default": {
+			"format": "[%(asctime)s] %(name)s %(levelname)s in %(module)s: %(message)s"
+		}},
+	"handlers": {
+		"console": {
+			"class": "logging.StreamHandler",
+			"level": "INFO",
+			"formatter": "default",
+			"stream": "ext://sys.stdout"
+		},
+		"debuglevel": {
+			"class": "logging.handlers.RotatingFileHandler",
+			"level": "DEBUG",
+			"formatter": "default",
+			"filename": "debug_log.log",
+			"encoding": "utf8"
+		}
+	},
+	"loggers": {
+		"example": {
+			"level": "DEBUG",
+			"handlers": ["debuglevel"]
+		}
+	},
+	"root": {
+		"level": "INFO",
+		"handlers": ["console", "debuglevel"]
+	},
+	"disable_existing_loggers": "false"
+}

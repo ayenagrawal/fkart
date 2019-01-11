@@ -1,3 +1,5 @@
+import logging.config
+import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 #from flask_jwt import JWT
@@ -10,21 +12,31 @@ from fkart.config import Config
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
+# Loading configuration settings for logger
+
+with open("fkart/logging_config.json", "r") as fileptr:
+    config_dict_data = json.loads(fileptr.read())
+logging.config.dictConfig(config_dict_data)
+LOGGER = logging.getLogger(__name__)
+LOGGER.info("SUCESSFULLY CONFIGURED LOGGER")
+
 
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
+LOGGER.info("Initialzed Bcrypt")
 
 print("Project is running!!!")
 
 
 jwt = JWTManager(app)
+LOGGER.info("Initialzed JSON web token")
 
 
 from fkart.controllers import export_api_list, PKG_DIR
 
-for c_name in export_api_list:
-    print(c_name.__name__)
+#for c_name in export_api_list:
+#    print(c_name.__name__)
 
 # Initialzing apis from controllers
 for api in export_api_list:
@@ -39,10 +51,11 @@ for api in export_api_list:
         api_url_temp += i
     api_url = api_url_temp
     del(api_url_temp)
-    print("API URL:"+api_url)
+    #print("API URL:"+api_url)
     #print('API NAME:'+api_name)
     # for removing '/' from beginning if present
     # if api_url[0] == "/":
         # api_url = api_url[1:]
     view = api.as_view("%s" % api_name)
     app.add_url_rule("/"+(api_url), view_func=view)
+LOGGER.info("ADDED APIs TO BE USED")
