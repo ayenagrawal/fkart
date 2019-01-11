@@ -9,19 +9,19 @@ app = Flask(__name__)
 
 print("Project is running!!!")
 
-from fkart.config import Config
-
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-
 # Loading configuration settings for logger
 
 with open("fkart/logging_config.json", "r") as fileptr:
     config_dict_data = json.loads(fileptr.read())
 logging.config.dictConfig(config_dict_data)
 LOGGER = logging.getLogger(__name__)
-LOGGER.info("SUCESSFULLY CONFIGURED LOGGER")
+LOGGER.info("LOGGER CONFIGURED")
 
+from fkart.config import Config
+
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+LOGGER.info("Initialized ORM")
 
 from flask_bcrypt import Bcrypt
 
@@ -58,4 +58,4 @@ for api in export_api_list:
         # api_url = api_url[1:]
     view = api.as_view("%s" % api_name)
     app.add_url_rule("/"+(api_url), view_func=view)
-LOGGER.info("ADDED APIs TO BE USED")
+LOGGER.info("Added APIs to be used")

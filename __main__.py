@@ -10,7 +10,7 @@ if __name__ == '__main__':
     except IndexError:
         ARG = ""
     if ARG == "":
-        app.run(host='0.0.0.0')
+        app.run()
     elif ARG == 'database':
         with app.app_context():
             pass
