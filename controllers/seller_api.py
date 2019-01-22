@@ -73,7 +73,7 @@ class Seller_Profile(BaseAPI):
             return jsonify({"message": "User profile updated sucessfully with data: "+str(user.basic_data())}), 200
         except Exception as error:
             LOGGER.error("SELLER: Profile updation failed")
-            return jsonify({"message": "Updated failed for profile", "error": str(error)})
+            return jsonify({"message": "Updated failed for profile", "error": str(error)}), 400
 
     @jwt_required
     def delete(self):
@@ -82,6 +82,6 @@ class Seller_Profile(BaseAPI):
             user = SellerModel.query.filter_by(id=userid).first()
             db.session.delete(user)
             db.session.commit()
-            return jsonify({"message": "Profile delete sucessfully"})
+            return jsonify({"message": "Profile delete sucessfully"}), 200
         except:
-            return jsonify({"message": "Delete profile failed for user"})
+            return jsonify({"message": "Delete profile failed for user"}), 400

@@ -2,7 +2,7 @@ import logging
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-from fkart.app import bcrypt
+from fkart.app import bcrypt, db
 from fkart.controllers.base import BaseAPI
 from fkart.models.customer import CustomerModel
 
@@ -42,3 +42,41 @@ class Customer_Profile(BaseAPI):
         except AttributeError as error:
             LOGGER.info("CUSTOMER: Exceptions occured while getting user profile")
             return jsonify({ "messsge": "Invalid JWT", "error": str(error)}), 401
+
+    @jwt_required
+    def put(self):
+        try:
+            userid = get_jwt_identity()
+            data_dict = dict(request.get_json())
+            user = CustomerModel.query.filter_by(id=userid).first()
+            if "email_address" in data_dict:
+                raise Exception("You can not update Email ID")
+            if "password" in data_dict:
+                user.password = bcrypt.generate_password_hash(data_dict["password"]).decode('utf-8')
+            if "first_name" in data_dict:
+                user.first_name = data_dict["first_name"]
+            if "last_name" in data_dict:
+                user.last_name = data_dict["last_name"]
+            if "dob" in data_dict:
+                user.dob = data_dict["dob"]
+            if "address" in data_dict:
+                user.address = data_dict["address"]
+            db.session.add(user)
+            db.session.commit()
+            db.session.refresh(user)
+            LOGGER.info("CUSTOMER: Profile data updated sucessfully")
+            return jsonify({"message": "User profile updated sucessfully with data: "+str(user.basic_data())}), 200
+        except Exception as error:
+            LOGGER.error("CUSTOMER: Profile updation failed")
+            return jsonify({"message": "Updated failed for profile", "error": str(error)}), 400
+
+    @jwt_required
+    def delete(self):
+        try:
+            userid = get_jwt_identity()
+            user = CustomerModel.query.filter_by(id=userid).first()
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({"message": "Profile delete sucessfully"}), 200
+        except:
+            return jsonify({"message": "Delete profile failed for user"}), 400
